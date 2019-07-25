@@ -1,0 +1,34 @@
+version: '2.3'
+
+services:
+  experiment:
+    user: ${USER_ID}:${GROUP_ID}
+    runtime: nvidia
+    build: .
+
+    command: /home/pipeline.sh
+
+    volumes:
+      - ${CUB200}:${CONTAINER_DATA}/original_datasets/CUB200:ro
+      - ${NAB}:${CONTAINER_DATA}/original_datasets/NAB:ro
+      - ${FLOWERS}:${CONTAINER_DATA}/original_datasets/FLOWERS:ro
+      - ${CARS}:${CONTAINER_DATA}/original_datasets/CARS:ro
+
+      - ${MODELS}:${CONTAINER_DATA}/models:ro
+
+      - ./${DATASETS_FOLDER}:${CONTAINER_DATA}/${DATASETS_FOLDER}:rw
+      - ./${OUTPUT_FOLDER}:${PIPELINE_OUTPUT}:rw
+
+      - .:/home:ro
+
+      - ${SVM_BASELINES}:${SVM_FOLDER}:ro
+      - ${FEATURE_EXTRACTION}:${EXTRACTOR_FOLDER}:ro
+
+    env_file:
+      - .env
+
+    environment:
+      - PIPELINE_OUTPUT=${PIPELINE_OUTPUT}
+      - CONTAINER_DATA=${CONTAINER_DATA}
+      # we need to set this, because cached stuff is saved there
+      - HOME=${PIPELINE_OUTPUT}

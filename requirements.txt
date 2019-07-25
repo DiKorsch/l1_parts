@@ -1,0 +1,22 @@
+# third-party packages
+numpy~=1.15
+six~=1.11.0
+matplotlib~=3.0
+imageio~=2.3.0
+PyYAML~=5.1
+simplejson~=3.14
+sacred~=0.7.4
+tqdm~=4.31
+scikit-learn~=0.20.0
+scikit-image~=0.14.0
+cyvlfeat~=0.5.0
+joblib~=0.12.1
+
+# these should be installed by Docker
+#chainer~=4.2.0
+#cupy-cuda92~=4.2.0
+
+# my own packages
+cvargparse~=0.1.5
+cvdatasets~=0.4.2
+chainer_addons~=0.6.0

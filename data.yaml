@@ -1,0 +1,156 @@
+BASE_DIR: /data
+
+DATA_DIR: datasets
+MODEL_DIR: models
+
+MODELS:
+  resnet:    &resnet
+    folder: ""
+    class_key: resnet
+    weights: imagenet.resnet.npz
+
+  inception:    &inception
+    folder: ""
+    class_key: inception
+    weights: inat.inceptionV3.ckpt.npz
+
+  inception_inat:    &inception_inat
+    folder: ""
+    class_key: inception
+    weights: inat.inceptionV3.ckpt.npz
+
+  inception_imagenet:    &inception_inet
+    folder: ""
+    class_key: inception
+    weights: imagenet.inceptionV3.ckpt.npz
+
+DATASETS:
+  CUB200:         &cub200
+    folder: CUB200
+    n_classes: 200
+    label_shift: 1
+
+  NAB:         &nabirds
+    folder: NAB
+    n_classes: 555
+    label_shift: 0
+
+  CARS:         &cars
+    folder: CARS
+    n_classes: 196
+    label_shift: 1
+
+  FLOWERS:         &flowers
+    folder: FLOWERS
+    n_classes: 102
+    label_shift: 1
+
+PART_TYPES:
+  GLOBAL:         &parts_global
+    feature_suffix: ""
+    annotations: "GLOBAL"
+
+  L1_pred:        &parts_l1p
+    feature_suffix: _5parts_L1_pred
+    rescale_size: !!int 427
+    annotations: L1_pred
+    scales: [-1]
+
+  L1_full:        &parts_l1f
+    feature_suffix: _5parts_L1_full
+    rescale_size: !!int 427
+    annotations: L1_full
+    scales: [-1]
+
+  GT:             &parts_gt
+    feature_suffix: _16parts_gt
+    rescale_size: !!int -1
+    scales:
+     - 0.31
+
+  GT2:            &parts_gt2
+    feature_suffix: _5parts_gt
+    rescale_size: !!int -1
+    scales:
+      - 0.31
+
+  NAC:            &parts_nac
+    feature_suffix: _20parts
+    rescale_size: !!int 224
+    scales:
+      - 0.31
+      - 0.45
+
+PARTS:
+  #### No Parts Annotations / Only Global Information
+
+  CUB200_GLOBAL:
+    <<: *cub200
+    <<: *parts_global
+
+  CARS_GLOBAL:
+    <<: *cars
+    <<: *parts_global
+
+  NAB_GLOBAL:
+    <<: *nabirds
+    <<: *parts_global
+
+  FLOWERS_GLOBAL:
+    <<: *flowers
+    <<: *parts_global
+
+  # L1-Based parts
+
+  CUB200_L1_pred:
+    <<: *cub200
+    <<: *parts_l1p
+
+  NAB_L1_pred:
+    <<: *nabirds
+    <<: *parts_l1p
+
+  CARS_L1_pred:
+    <<: *cars
+    <<: *parts_l1p
+
+  FLOWERS_L1_pred:
+    <<: *flowers
+    <<: *parts_l1p
+
+  # L1-Based parts using the full feature vector
+
+  CUB200_L1_full:
+    <<: *cub200
+    <<: *parts_l1f
+
+  NAB_L1_full:
+    <<: *nabirds
+    <<: *parts_l1f
+
+  CARS_L1_full:
+    <<: *cars
+    <<: *parts_l1f
+
+  FLOWERS_L1_full:
+    <<: *flowers
+    <<: *parts_l1f
+
+  # GT and NAC annotations
+
+  CUB200_GT:
+    <<: *cub200
+    <<: *parts_gt
+    annotations: GT
+
+  CUB200_GT2:
+    <<: *cub200
+    <<: *parts_gt2
+    annotations: GT_regrouped
+
+  CUB200_NAC:
+    <<: *cub200
+    <<: *parts_nac
+    annotations: NAC
+
+
