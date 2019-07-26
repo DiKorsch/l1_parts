@@ -5,6 +5,8 @@ export OUTPUT_FOLDER=output
 export DATASETS_FOLDER=datasets
 
 ## container config
+export CODE_ROOT=/home/code
+export REPOS_ROOT=/home/repos
 export CONTAINER_DATA=/data
 export PIPELINE_OUTPUT=${CONTAINER_DATA}/${OUTPUT_FOLDER}
 

@@ -30,7 +30,7 @@ echo "Trained SVMs and features are saved under ${RESULTS}"
 check_dir "${RESULTS}"
 
 
-export DATA=${CONTAINER_DATA}/data.yaml
+export DATA=${CODE_ROOT}/data.yaml
 
 # echo "Pipeline starts in 5s, time for last checks ..."
 # sleep 5s
@@ -94,7 +94,7 @@ for NAME in $DATASETS ; do
 		export OUTPUT=${FEAT_DIR}
 		export PARTS=GLOBAL
 
-		cd ${EXTRACTOR_FOLDER}/scripts
+		cd ${REPOS_ROOT}/${EXTRACTOR_FOLDER}/scripts
 		./extract.sh \
 			--logfile ${LOGDIR}/00_global_extraction.log \
 			${OPTS}
@@ -112,7 +112,7 @@ for NAME in $DATASETS ; do
 		export OUTPUT=${RESULTS}
 		export PARTS=GLOBAL
 
-		cd ${SVM_FOLDER}/scripts
+		cd ${REPOS_ROOT}/${SVM_FOLDER}/scripts
 		./train.sh \
 			--C $C \
 			--logfile ${LOGDIR}/01_Baseline_SVM.log
@@ -130,7 +130,7 @@ for NAME in $DATASETS ; do
 		export OUTPUT=${RESULTS}
 		export PARTS=GLOBAL
 
-		cd ${SVM_FOLDER}/scripts
+		cd ${REPOS_ROOT}/${SVM_FOLDER}/scripts
 		./train.sh \
 			--sparse \
 			--C $C \
@@ -149,7 +149,7 @@ for NAME in $DATASETS ; do
 		export N_JOBS=0
 		export SVM_OUTPUT=${RESULTS}
 
-		cd ${SVM_FOLDER}/scripts
+		cd ${REPOS_ROOT}/${SVM_FOLDER}/scripts
 		./locs_from_L1_SVM.sh ${OPTS} \
 			--logfile ${LOGDIR}/03_part_estimation.log \
 			--weights ${WEIGHTS} \
@@ -175,7 +175,7 @@ for NAME in $DATASETS ; do
 			export OUTPUT=${FEAT_DIR}
 			export PARTS=${parts}
 
-			cd ${EXTRACTOR_FOLDER}/scripts
+			cd ${REPOS_ROOT}/${EXTRACTOR_FOLDER}/scripts
 			./extract.sh \
 				--logfile ${LOGDIR}/04_part_extraction_${parts}.log \
 				${OPTS}
@@ -191,7 +191,7 @@ for NAME in $DATASETS ; do
 			export OUTPUT=${RESULTS}
 			export PARTS=${parts}
 
-			cd ${SVM_FOLDER}/scripts
+			cd ${REPOS_ROOT}/${SVM_FOLDER}/scripts
 			./train.sh \
 				-clf svm \
 				--logfile ${LOGDIR}/05_svm_training_${parts}.log \

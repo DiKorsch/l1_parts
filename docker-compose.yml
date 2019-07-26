@@ -6,33 +6,41 @@ services:
     runtime: nvidia
     build: .
 
-    command: /home/pipeline.sh
+    command: ${CODE_ROOT}/pipeline.sh
 
     volumes:
+      # mount original datasets
       - ${CUB200}:${CONTAINER_DATA}/original_datasets/CUB200:ro
       - ${NAB}:${CONTAINER_DATA}/original_datasets/NAB:ro
       - ${FLOWERS}:${CONTAINER_DATA}/original_datasets/FLOWERS:ro
       - ${CARS}:${CONTAINER_DATA}/original_datasets/CARS:ro
 
-      - ${MODELS}:${CONTAINER_DATA}/models:ro
-
+      # mount this folder for some dataset preprocessing
       - ./${DATASETS_FOLDER}:${CONTAINER_DATA}/${DATASETS_FOLDER}:rw
+
+      # mount models
+      - ./${MODELS_FOLDER}:${CONTAINER_DATA}/${MODELS_FOLDER}:ro
+
+      # mount output folder
       - ./${OUTPUT_FOLDER}:${PIPELINE_OUTPUT}:rw
 
-      - .:/home:ro
+      # mount code folder
+      - .:${CODE_ROOT}:ro
 
-      - ${SVM_BASELINES}:${SVM_FOLDER}:ro
-      - ${FEATURE_EXTRACTION}:${EXTRACTOR_FOLDER}:ro
+      # mount other repositories
+      - ${SVM_BASELINES}:${REPOS_ROOT}/${SVM_FOLDER}:ro
+      - ${FEATURE_EXTRACTION}:${REPOS_ROOT}/${EXTRACTOR_FOLDER}:ro
 
     env_file:
       - .env
 
     environment:
+      - HOME=/home
       - PIPELINE_OUTPUT=${PIPELINE_OUTPUT}
       - CONTAINER_DATA=${CONTAINER_DATA}
-      # we need to set this, because cached stuff is saved there
-      - HOME=${PIPELINE_OUTPUT}
       - GPU=${GPU}
       - DATASETS=${DATASETS}
       - DATASETS_FOLDER=${DATASETS_FOLDER}
       - BATCH_SIZE=${BATCH_SIZE}
+      - REPOS_ROOT=${REPOS_ROOT}
+      - CODE_ROOT=${CODE_ROOT}
