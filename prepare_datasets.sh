@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-DEST=/data/datasets
+DEST=${CONTAINER_DATA}/${DATASETS_FOLDER}
 touch ${DEST}/.nobackup
 
 SRC=/data/original_datasets

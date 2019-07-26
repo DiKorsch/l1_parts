@@ -37,14 +37,20 @@ export DATA=${CONTAINER_DATA}/data.yaml
 
 for NAME in $DATASETS ; do
 	CNN_ARCH=inception
+	INPUT_SIZE=427
+	OPTS=""
 
 	if [[ ${NAME} == "CUB200" ]]; then
 		label_shift=1
+
 	elif [[ ${NAME} == "NAB" ]]; then
 		label_shift=0
+
 	elif [[ ${NAME} == "CARS" ]]; then
 		label_shift=1
 		CNN_ARCH=resnet
+		INPUT_SIZE=448
+
 	elif [[ ${NAME} == "FLOWERS" ]]; then
 		label_shift=1
 	else
@@ -55,7 +61,7 @@ for NAME in $DATASETS ; do
 	export DATASET=$NAME
 	export WEIGHTS=${CONTAINER_DATA}/models/ft_${NAME}_${CNN_ARCH}.npz
 
-	DATASET_FOLDER=${CONTAINER_DATA}/datasets/${NAME}
+	DATASET_FOLDER=${CONTAINER_DATA}/${DATASETS_FOLDER}/${NAME}
 	OPTS=""
 
 	if [[ ! -d $DATASET_FOLDER ]]; then
@@ -73,9 +79,11 @@ for NAME in $DATASETS ; do
 
 	# OPTS="${OPTS} --no_center_crop_on_val"
 	# OPTS="${OPTS} --swap_channels"
-	OPTS="${OPTS} --input_size 427"
+	OPTS="${OPTS} --input_size $INPUT_SIZE"
 	OPTS="${OPTS} --label_shift ${label_shift}"
 	OPTS="${OPTS} --prepare_type model"
+
+	export MODEL_TYPE=$CNN_ARCH
 
 	###############################################
 	# extract global features
@@ -85,7 +93,6 @@ for NAME in $DATASETS ; do
 		export N_JOBS=3
 		export OUTPUT=${FEAT_DIR}
 		export PARTS=GLOBAL
-		export MODEL_TYPE=$CNN_ARCH
 
 		cd ${EXTRACTOR_FOLDER}/scripts
 		./extract.sh \
@@ -110,15 +117,15 @@ for NAME in $DATASETS ; do
 			--C $C \
 			--logfile ${LOGDIR}/01_Baseline_SVM.log
 
-		check_return "L1 Training"
+		check_return "Baseline SVM Training"
 	else
-		echo "Skipping L1 Training"
+		echo "Skipping Baseline SVM Training"
 	fi
 
 	###############################################
 	# Train L1 SVM
 	###############################################
-	if [[ $SKIP_L1_SVM_TRAINING != "1" ]]; then
+	if [[ $SKIP_SPARSE_SVM_TRAINING != "1" ]]; then
 
 		export OUTPUT=${RESULTS}
 		export PARTS=GLOBAL
@@ -138,7 +145,7 @@ for NAME in $DATASETS ; do
 	###############################################
 	# estimate L1-SVM parts
 	###############################################
-	if [[ $SKIP_L1_PARTS_ESTIMATION != "1" ]]; then
+	if [[ $SKIP_PARTS_ESTIMATION != "1" ]]; then
 		export N_JOBS=0
 		export SVM_OUTPUT=${RESULTS}
 
@@ -163,11 +170,10 @@ for NAME in $DATASETS ; do
 		###############################################
 		# extract part features
 		###############################################
-		if [[ $SKIP_L1_PARTS_EXTRACTION != "1" ]]; then
+		if [[ $SKIP_PARTS_EXTRACTION != "1" ]]; then
 			export N_JOBS=3
 			export OUTPUT=${FEAT_DIR}
 			export PARTS=${parts}
-			export MODEL_TYPE=$CNN_ARCH
 
 			cd ${EXTRACTOR_FOLDER}/scripts
 			./extract.sh \

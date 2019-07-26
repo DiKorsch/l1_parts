@@ -32,3 +32,7 @@ services:
       - CONTAINER_DATA=${CONTAINER_DATA}
       # we need to set this, because cached stuff is saved there
       - HOME=${PIPELINE_OUTPUT}
+      - GPU=${GPU}
+      - DATASETS=${DATASETS}
+      - DATASETS_FOLDER=${DATASETS_FOLDER}
+      - BATCH_SIZE=${BATCH_SIZE}
