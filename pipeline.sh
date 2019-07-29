@@ -23,8 +23,8 @@ function check_dir {
 
 export OMP_NUM_THREADS=2
 
-# export RESULTS=${PIPELINE_OUTPUT}/results_C${C}/$(date +%Y-%m-%d-%H.%M.%S)
-export RESULTS=${PIPELINE_OUTPUT}/results_C${C}
+export RESULTS=${PIPELINE_OUTPUT}/results_C${C}/$(date +%Y-%m-%d-%H.%M.%S)
+# export RESULTS=${PIPELINE_OUTPUT}/results_C${C}
 echo "Trained SVMs and features are saved under ${RESULTS}"
 
 check_dir "${RESULTS}"
