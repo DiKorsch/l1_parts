@@ -27,10 +27,6 @@ services:
       # mount code folder
       - .:${CODE_ROOT}:ro
 
-      # mount other repositories
-      - ${SVM_BASELINES}:${REPOS_ROOT}/${SVM_FOLDER}:ro
-      - ${FEATURE_EXTRACTION}:${REPOS_ROOT}/${EXTRACTOR_FOLDER}:ro
-
     env_file:
       - .env
 

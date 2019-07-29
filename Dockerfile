@@ -17,13 +17,11 @@ RUN rm -r vlfeat-0.9.21 vlfeat-0.9.21-bin.tar.gz
 
 WORKDIR /home/repos
 # # clone my repos
-# RUN git clone --branch gcpr2019submission \
-# RUN git clone \
-# 	https://github.com/DiKorsch/svm_baselines.git
+RUN git clone --branch gcpr2019submission \
+	https://github.com/DiKorsch/svm_baselines.git ${SVM_FOLDER}
 
-# RUN git clone --branch gcpr2019submission \
-# RUN git clone \
-# 	https://github.com/DiKorsch/feature_extraction.git
+RUN git clone --branch gcpr2019submission \
+	https://github.com/DiKorsch/feature_extraction.git ${EXTRACTOR_FOLDER}
 
 COPY requirements.txt /home/repos
 RUN pip3 install --upgrade pip
