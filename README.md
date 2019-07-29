@@ -1,5 +1,7 @@
 # L1-SVM based parts extraction
 
+Code for the paper "Classification-Specific Parts for Improving Fine-Grained Visual Categorization"
+
 ## Installation
 
 ### Prerequisite
@@ -46,7 +48,7 @@ Create the required docker image with the script:
 ### Download the datasets and models
 
 1. Download the needed datasets. Set up the according paths in the `.env` file.
-2. Download the fine-tuned models or copy your own models to the `models` folder
+2. Download the [fine-tuned models](models) or copy your own models to the `models` folder
 
 ### Start an experiment
 
