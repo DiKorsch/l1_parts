@@ -37,28 +37,28 @@ def main(args):
 	for dataset in args.datasets:
 		path_pattern = join(args.results_dir, "*", "logs", dataset)
 		tab = PrettyTable(
-			field_names=["Baseline", "L1 Pred", "L1 Full"],
+			field_names=["Run", "Baseline", "L1 Pred", "L1 Full"],
 			title=f"Accuracies for {dataset}:",
 
 		)
 
 		accs = []
-		for log_dir in glob(path_pattern):
+		for i, log_dir in enumerate(glob(path_pattern), 1):
 			if not isdir(log_dir): continue
 
 			baseline_acc = read_accuracy(log_dir, BASELINE)
 			l1_pred_acc = read_accuracy(log_dir, L1_PRED)
 			l1_full_acc = read_accuracy(log_dir, L1_FULL)
 
-			row = [baseline_acc, l1_pred_acc, l1_full_acc]
+			row = [i, baseline_acc, l1_pred_acc, l1_full_acc]
 			tab.add_row(row)
 			accs.append(row)
 
-		accs = np.array(accs)
+		accs = np.array(accs)[:, 1:]
 		means, stds = np.nanmean(accs, axis=0), np.nanstd(accs, axis=0)
 
 		final_row = [f"{m:.4f} +/- {s:.2f}" for m,s in zip(means, stds)]
-		tab.add_row(final_row)
+		tab.add_row(["mean/std"] + final_row)
 
 		print(tab)
 
