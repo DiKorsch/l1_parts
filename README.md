@@ -63,7 +63,7 @@ or set according datasets (and GPUs) manually:
 ```
 GPU=0 DATASETS=NAB ./02_main.sh
 GPU=1 DATASETS="CUB200 FLOWERS" ./02_main.sh
-GPU=2 DATASETS=CARS ./02_main.sh
+GPU=2 BATCH_SIZE=16 DATASETS=CARS ./02_main.sh
 ```
 
 All trained SVMs, logs with accuracy results, and extracted features will be stored in `output` and `datasets` folders.
