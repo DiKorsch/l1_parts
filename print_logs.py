@@ -8,7 +8,8 @@ from argparse import ArgumentParser
 from glob import glob
 from os.path import join, isdir, isfile
 
-from prettytable import PrettyTable
+# from prettytable import PrettyTable
+from tabulate import tabulate
 
 # encodes the filename and the line, where the accuracy is located
 BASELINE = ("01_Baseline_SVM.log", "Accuracy glob_only:")
@@ -36,13 +37,8 @@ def read_accuracy(log_dir, info):
 def main(args):
 	for dataset in args.datasets:
 		path_pattern = join(args.results_dir, "*", "logs", dataset)
-		tab = PrettyTable(
-			field_names=["Run", "Baseline", "L1 Pred", "L1 Full"],
-			title=f"Accuracies for {dataset}:",
 
-		)
-
-		accs = []
+		accs, rows = [], []
 		for i, log_dir in enumerate(glob(path_pattern), 1):
 			if not isdir(log_dir): continue
 
@@ -50,17 +46,25 @@ def main(args):
 			l1_pred_acc = read_accuracy(log_dir, L1_PRED)
 			l1_full_acc = read_accuracy(log_dir, L1_FULL)
 
-			row = [i, baseline_acc, l1_pred_acc, l1_full_acc]
-			tab.add_row(row)
+			row = [baseline_acc, l1_pred_acc, l1_full_acc]
+			rows.append([i] + row)
 			accs.append(row)
 
-		accs = np.array(accs)[:, 1:]
+		accs = np.array(accs)
 		means, stds = np.nanmean(accs, axis=0), np.nanstd(accs, axis=0)
 
 		final_row = [f"{m:.4f} +/- {s:.2f}" for m,s in zip(means, stds)]
-		tab.add_row(["mean/std"] + final_row)
+		rows.append(["mean/std"] + final_row)
 
+		tab = tabulate(rows,
+			headers=["Run", "Baseline", "L1 Pred", "L1 Full"],
+			tablefmt="fancy_grid")
+
+		title = f"Accuracies for {dataset}"
+
+		print(title)
 		print(tab)
+		print()
 
 
 
