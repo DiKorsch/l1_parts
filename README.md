@@ -1,6 +1,6 @@
 # L1-SVM based parts extraction
 
-Code for the paper "Classification-Specific Parts for Improving Fine-Grained Visual Categorization"
+Code for the paper "[Classification-Specific Parts for Improving Fine-Grained Visual Categorization](https://arxiv.org/abs/1909.07075)"
 
 ## Installation
 
