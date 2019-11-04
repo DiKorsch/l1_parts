@@ -22,12 +22,13 @@ function check_dir {
 }
 
 export OMP_NUM_THREADS=2
+N_RUNS=${N_RUNS:-10}
 
+for i in {1..${N_RUNS}}; do
 
-for i in {1..10}; do
+	echo "Run #${i} / ${N_RUNS}"
 
-	echo "Run #${i}"
-
+	# export RESULTS=${PIPELINE_OUTPUT}/results_C${C}/debug
 	export RESULTS=${PIPELINE_OUTPUT}/results_C${C}/$(date +%Y-%m-%d-%H.%M.%S)
 	# export RESULTS=${PIPELINE_OUTPUT}/results_C${C}
 	echo "Trained SVMs and features are saved under ${RESULTS}"
