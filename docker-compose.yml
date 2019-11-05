@@ -4,6 +4,7 @@ services:
   experiment:
     user: ${USER_ID}:${GROUP_ID}
     runtime: nvidia
+    image: l1_parts
     build: .
 
     command: ${CODE_ROOT}/pipeline.sh
