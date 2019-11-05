@@ -114,10 +114,10 @@ for i in {1..${N_RUNS}}; do
 		###############################################
 		if [[ $SKIP_BASELINE_SVM != "1" ]]; then
 
-			export OUTPUT=${RESULTS}
+			export SVM_OUTPUT=${RESULTS}
 			export PARTS=GLOBAL
 
-			cd ${REPOS_ROOT}/${SVM_FOLDER}/scripts
+			cd ${REPOS_ROOT}/${SVM_TRAINING}/scripts
 			./train.sh \
 				--C $C \
 				--logfile ${LOGDIR}/01_Baseline_SVM.log
@@ -132,10 +132,10 @@ for i in {1..${N_RUNS}}; do
 		###############################################
 		if [[ $SKIP_SPARSE_SVM_TRAINING != "1" ]]; then
 
-			export OUTPUT=${RESULTS}
+			export SVM_OUTPUT=${RESULTS}
 			export PARTS=GLOBAL
 
-			cd ${REPOS_ROOT}/${SVM_FOLDER}/scripts
+			cd ${REPOS_ROOT}/${SVM_TRAINING}/scripts
 			./train.sh \
 				--sparse \
 				--C $C \
@@ -151,10 +151,11 @@ for i in {1..${N_RUNS}}; do
 		# estimate L1-SVM parts
 		###############################################
 		if [[ $SKIP_PARTS_ESTIMATION != "1" ]]; then
-			export N_JOBS=0
-			export SVM_OUTPUT=${RESULTS}
 
-			cd ${REPOS_ROOT}/${SVM_FOLDER}/scripts
+			export SVM_OUTPUT=${RESULTS}
+			export N_JOBS=1
+
+			cd ${REPOS_ROOT}/${ESTIMATOR_FOLDER}/scripts
 			./locs_from_L1_SVM.sh ${OPTS} \
 				--logfile ${LOGDIR}/03_part_estimation.log \
 				--weights ${WEIGHTS} \
@@ -176,9 +177,10 @@ for i in {1..${N_RUNS}}; do
 			# extract part features
 			###############################################
 			if [[ $SKIP_PARTS_EXTRACTION != "1" ]]; then
-				export N_JOBS=3
-				export OUTPUT=${FEAT_DIR}
+
+				export SVM_OUTPUT=${FEAT_DIR}
 				export PARTS=${parts}
+				export N_JOBS=3
 
 				cd ${REPOS_ROOT}/${EXTRACTOR_FOLDER}/scripts
 				./extract.sh \
@@ -193,10 +195,11 @@ for i in {1..${N_RUNS}}; do
 			# train SVM on these parts
 			###############################################
 			if [[ $SKIP_PARTS_SVM_TRAINING != "1" ]]; then
-				export OUTPUT=${RESULTS}
+
+				export SVM_OUTPUT=${RESULTS}
 				export PARTS=${parts}
 
-				cd ${REPOS_ROOT}/${SVM_FOLDER}/scripts
+				cd ${REPOS_ROOT}/${SVM_TRAINING}/scripts
 				./train.sh \
 					-clf svm \
 					--logfile ${LOGDIR}/05_svm_training_${parts}.log \
