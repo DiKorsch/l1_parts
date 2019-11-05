@@ -19,3 +19,4 @@ install:
 
 script:
   - python print_chainer_config.py
+
