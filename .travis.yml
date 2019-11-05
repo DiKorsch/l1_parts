@@ -18,5 +18,5 @@ install:
   - ./01_install.sh
 
 script:
-  - python print_chainer_config.py
+  - ./02_main.sh python3 print_chainer_config.py
 
