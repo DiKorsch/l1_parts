@@ -71,7 +71,7 @@ All trained SVMs, logs with accuracy results, and extracted features will be sto
 
 
 ## Citation
-If you use the code in your research, please cite as following:
+You are welcome to use our code in your research! If you do so please cite it as:
 
 ```bibtex
 @inproceedings{Korsch19_CSPARTS,
