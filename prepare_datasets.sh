@@ -19,9 +19,18 @@ for DATA_DIR in $SRC/*; do
 		DIR=${DEST}/${DATA_NAME}/${subset}/
 
 		$MKDIR $DIR
+		if [[ -d ${DATA_DIR/images} ]]; then
+			$LN $(realpath ${DATA_DIR}/*.txt) $DIR
+			$LN $(realpath ${DATA_DIR}/images) $DIR
+		else
+			for dir in ${DATA_DIR}/*; do
+				if [[ $(basename $dir) == "features" ]]; then
+					continue
+				fi
+				$LN $(realpath $dir) $DIR
+			done
+		fi
 
-		$LN $(realpath ${DATA_DIR}/*.txt) $DIR
-		$LN $(realpath ${DATA_DIR}/images) $DIR
 		$LN ../features ${DIR}/features
 
 		if [[ -d  ${DATA_DIR}/parts && ($subset == "GT" || $subset == "GLOBAL") ]]; then

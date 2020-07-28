@@ -28,9 +28,14 @@ for i in {1..${N_RUNS}}; do
 
 	echo "Run #${i} / ${N_RUNS}"
 
-	# export RESULTS=${PIPELINE_OUTPUT}/results_C${C}/debug
-	export RESULTS=${PIPELINE_OUTPUT}/results_C${C}/$(date +%Y-%m-%d-%H.%M.%S)
-	# export RESULTS=${PIPELINE_OUTPUT}/results_C${C}
+	if [[ ${DEBUG:-0} == 1 ]]; then
+		export RESULTS=${PIPELINE_OUTPUT}/results_C${C}/debug
+
+	else
+		export RESULTS=${PIPELINE_OUTPUT}/results_C${C}/$(date +%Y-%m-%d-%H.%M.%S)
+
+	fi
+
 	echo "Trained SVMs and features are saved under ${RESULTS}"
 
 	check_dir "${RESULTS}"
@@ -48,8 +53,14 @@ for i in {1..${N_RUNS}}; do
 		if [[ ${NAME} == "CUB200" ]]; then
 			label_shift=1
 
+		elif [[ ${NAME} == "BIRDSNAP" ]]; then
+			label_shift=1
+
 		elif [[ ${NAME} == "NAB" ]]; then
 			label_shift=0
+
+		elif [[ ${NAME} == "HERBA19" ]]; then
+			label_shift=1
 
 		elif [[ ${NAME} == "CARS" ]]; then
 			label_shift=1
@@ -59,7 +70,7 @@ for i in {1..${N_RUNS}}; do
 		elif [[ ${NAME} == "FLOWERS" ]]; then
 			label_shift=1
 		else
-			echo "Unknown dataset: $NAME"
+			echo "[pipeline.sh] Unknown dataset: $NAME"
 			exit 1
 		fi
 
@@ -178,7 +189,7 @@ for i in {1..${N_RUNS}}; do
 			###############################################
 			if [[ $SKIP_PARTS_EXTRACTION != "1" ]]; then
 
-				export SVM_OUTPUT=${FEAT_DIR}
+				export OUTPUT=${FEAT_DIR}
 				export PARTS=${parts}
 				export N_JOBS=3
 

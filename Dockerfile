@@ -1,9 +1,9 @@
-# copied from https://github.com/chainer/chainer/blob/v6.5.0/docker/python3/Dockerfile
-# updated for CUDA v10 and Ubuntu 18.04
+# copied from https://github.com/chainer/chainer/blob/v6.7.0/docker/python3/Dockerfile
+# updated for CUDA v10.1 and Ubuntu 18.04
 
-FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu18.04 AS l1_parts
+FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04 AS l1_parts
 
-ENV CHAINER_VERSION="6.5.0"
+ENV CHAINER_VERSION="6.7.0"
 ENV EXTRACTOR_FOLDER="feature_extraction"
 ENV ESTIMATOR_FOLDER="l1_part_estimatoin"
 ENV SVM_TRAINING="svm_training"
@@ -20,13 +20,15 @@ RUN apt-get update  -y && \
 		cmake \
 		libblas3 \
 		libblas-dev  \
-		openssh-client && \
+		openssh-client \
+		apt-transport-https \
+		ca-certificates && \
 	# clean up
 	rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* && \
 	pip3 install --upgrade pip && \
 	# install chainer and cupy
 	pip install --no-cache-dir \
-		cupy-cuda100==${CHAINER_VERSION} \
+		cupy-cuda101==${CHAINER_VERSION} \
 		chainer==${CHAINER_VERSION}
 
 

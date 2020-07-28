@@ -9,11 +9,13 @@ env:
   - DOCKER_COMPOSE_VERSION=1.24.1
 
 before_install:
+  # install docker-compose
   - sudo rm /usr/local/bin/docker-compose
   - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 
+  # install nvidia-docker
   - curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
   - distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
   - curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
