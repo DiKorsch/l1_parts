@@ -111,6 +111,7 @@ for i in {1..${N_RUNS}}; do
 			export PARTS=GLOBAL
 
 			cd ${REPOS_ROOT}/${EXTRACTOR_FOLDER}/scripts
+			BATCH_SIZE=128 \
 			./extract.sh \
 				--logfile ${LOGDIR}/00_global_extraction.log \
 				${OPTS}
