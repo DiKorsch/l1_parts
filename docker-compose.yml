@@ -30,11 +30,6 @@ services:
       # mount code folder
       - .:${CODE_ROOT}:ro
 
-      # mount repos folders
-      - ../02_Part_Estimation:${REPOS_ROOT}/${ESTIMATOR_FOLDER}:ro
-      - ../03_Feature_Extraction:${REPOS_ROOT}/${EXTRACTOR_FOLDER}:ro
-      - ../04_SVM_Training:${REPOS_ROOT}/${SVM_TRAINING}:ro
-
 
     env_file:
       - .env

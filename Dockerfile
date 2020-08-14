@@ -19,16 +19,16 @@ RUN tar xzf vlfeat-0.9.21-bin.tar.gz && \
 	rm -r vlfeat-0.9.21 vlfeat-0.9.21-bin.tar.gz
 
 WORKDIR /home/repos
-# # clone my repos
+# clone my repos
 
-# RUN git clone https://github.com/DiKorsch/feature_extraction.git ${EXTRACTOR_FOLDER}
-# # RUN cd ${EXTRACTOR_FOLDER}; git checkout gcpr2019submission -b gcpr2019submission; cd ..
+RUN git clone https://github.com/DiKorsch/feature_extraction.git ${EXTRACTOR_FOLDER}
+# RUN cd ${EXTRACTOR_FOLDER}; git checkout gcpr2019submission -b gcpr2019submission; cd ..
 
-# RUN git clone https://github.com/DiKorsch/l1_part_estimation.git ${ESTIMATOR_FOLDER}
-# # RUN cd ${ESTIMATOR_FOLDER}; git checkout gcpr2019submission -b gcpr2019submission; cd ..
+RUN git clone https://github.com/DiKorsch/l1_part_estimation.git ${ESTIMATOR_FOLDER}
+# RUN cd ${ESTIMATOR_FOLDER}; git checkout gcpr2019submission -b gcpr2019submission; cd ..
 
-# RUN git clone https://github.com/DiKorsch/svm_training.git ${SVM_TRAINING}
-# # RUN cd ${SVM_TRAINING}; git checkout gcpr2019submission -b gcpr2019submission; cd ..
+RUN git clone https://github.com/DiKorsch/svm_training.git ${SVM_TRAINING}
+# RUN cd ${SVM_TRAINING}; git checkout gcpr2019submission -b gcpr2019submission; cd ..
 
 COPY requirements.txt /home/repos
 RUN ${PIP} install -r requirements.txt
