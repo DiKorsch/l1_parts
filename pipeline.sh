@@ -22,7 +22,7 @@ function check_dir {
 }
 
 export OMP_NUM_THREADS=2
-N_RUNS=${N_RUNS:-10}
+N_RUNS=${N_RUNS:-1}
 
 for i in {1..${N_RUNS}}; do
 
@@ -174,6 +174,7 @@ for i in {1..${N_RUNS}}; do
 				--topk 5 \
 				--K $N_PARTS \
 				--thresh_type otsu \
+				--feature_composition coords saliency rgb \
 				--extract \
 					${DATASET_FOLDER}/L1_pred/parts/part_locs.txt \
 					${DATASET_FOLDER}/L1_full/parts/part_locs.txt
