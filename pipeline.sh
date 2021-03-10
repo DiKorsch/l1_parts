@@ -21,7 +21,7 @@ function check_dir {
 	fi
 }
 
-export OMP_NUM_THREADS=2
+export OMP_NUM_THREADS=1
 N_RUNS=${N_RUNS:-1}
 
 for i in {1..${N_RUNS}}; do
@@ -40,7 +40,7 @@ for i in {1..${N_RUNS}}; do
 
 	check_dir "${RESULTS}"
 
-	export DATA=${CODE_ROOT}/data.yaml
+	export DATA=${CODE_ROOT}/data.moths.yaml
 
 	# echo "Pipeline starts in 5s, time for last checks ..."
 	# sleep 5s
@@ -69,6 +69,10 @@ for i in {1..${N_RUNS}}; do
 
 		elif [[ ${NAME} == "FLOWERS" ]]; then
 			label_shift=1
+
+		elif [[ ${NAME} == "MOTHS" ]]; then
+			label_shift=0
+
 		else
 			echo "[pipeline.sh] Unknown dataset: $NAME"
 			exit 1
@@ -106,7 +110,7 @@ for i in {1..${N_RUNS}}; do
 		###############################################
 		if [[ $SKIP_GLOBAL_FEATURE_EXTRACTION != "1" ]]; then
 
-			export N_JOBS=3
+			export N_JOBS=0
 			export OUTPUT=${FEAT_DIR}
 			export PARTS=GLOBAL
 
@@ -165,7 +169,7 @@ for i in {1..${N_RUNS}}; do
 		if [[ $SKIP_PARTS_ESTIMATION != "1" ]]; then
 
 			export SVM_OUTPUT=${RESULTS}
-			export N_JOBS=1
+			export N_JOBS=0
 
 			cd ${REPOS_ROOT}/${ESTIMATOR_FOLDER}/scripts
 			./locs_from_L1_SVM.sh ${OPTS} \
@@ -193,7 +197,7 @@ for i in {1..${N_RUNS}}; do
 
 				export OUTPUT=${FEAT_DIR}
 				export PARTS=${parts}
-				export N_JOBS=3
+				export N_JOBS=0
 
 				cd ${REPOS_ROOT}/${EXTRACTOR_FOLDER}/scripts
 				./extract.sh \

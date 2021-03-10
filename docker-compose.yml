@@ -17,6 +17,7 @@ services:
       - ${FLOWERS}:${CONTAINER_DATA}/original_datasets/FLOWERS:ro
       - ${CARS}:${CONTAINER_DATA}/original_datasets/CARS:ro
       - ${HERBA19}:${CONTAINER_DATA}/original_datasets/HERBA19:ro
+      - ${MOTHS}:${CONTAINER_DATA}/original_datasets/MOTHS:ro
 
       # mount this folder for some dataset preprocessing
       - ./${DATASETS_FOLDER}:${CONTAINER_DATA}/${DATASETS_FOLDER}:rw
@@ -29,6 +30,11 @@ services:
 
       # mount code folder
       - .:${CODE_ROOT}:ro
+
+      # mount repos folders
+      - ../02_Part_Estimation:${REPOS_ROOT}/${ESTIMATOR_FOLDER}:ro
+      - ../03_Feature_Extraction:${REPOS_ROOT}/${EXTRACTOR_FOLDER}:ro
+      - ../04_SVM_Training:${REPOS_ROOT}/${SVM_TRAINING}:ro
 
 
     env_file:

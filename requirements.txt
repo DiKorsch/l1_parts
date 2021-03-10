@@ -1,19 +1,20 @@
 # third-party packages
 cyvlfeat~=0.5.0
 imageio~=2.3.0
-joblib~=0.12.1
+joblib~=0.14
 matplotlib~=3.0
 numpy~=1.16
 PyYAML~=5.1
 sacred~=0.7.4
 scikit-image~=0.15
-scikit-learn~=0.21
+scikit-learn~=0.22
 scipy~=1.3.1
 setuptools~=41.0
 simplejson~=3.14
 six~=1.11.0
 tqdm~=4.31
 pymongo~=3.10
+tabulate
 
 # these should be installed by Docker
 #chainer~=6.5.0
@@ -21,7 +22,7 @@ pymongo~=3.10
 
 # my own packages
 cvargparse~=0.1
-cvdatasets~=0.8
+cvdatasets~=0.9
 cvfinetune~=0.5
 chainer_addons~=0.6
 cluster_parts~=0.2
