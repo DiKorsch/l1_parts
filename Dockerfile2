@@ -3,14 +3,20 @@ FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04 AS chainer-cuda101-opencv4.1.1
 ENV CHAINER_VERSION="6.7.0"
 ENV OPENCV_VERSION="4.1.1"
 
-ENV PIP="pip3"
-ENV PYTHON="python3"
+ENV PIP="pip"
+ENV PYTHON="python"
 
 
 RUN apt-get update  -y && \
-	apt-get upgrade -y && \
-	# install needed packages
-	apt-get install -y --no-install-recommends \
+	apt-get upgrade -y
+
+# this one is needed for python3.8-venv
+RUN apt-get install -y --no-install-recommends \
+        software-properties-common && \
+	add-apt-repository -y ppa:deadsnakes
+
+# install needed packages
+RUN apt-get install -y --no-install-recommends \
 		apt-transport-https \
 		ca-certificates \
 		build-essential \
@@ -29,19 +35,19 @@ RUN apt-get update  -y && \
 		libtiff-dev \
 		libavformat-dev \
 		libpq-dev \
-		${PYTHON}-dev \
-		${PYTHON}-numpy \
-		${PYTHON}-wheel \
-		${PYTHON}-pip \
-		${PYTHON}-setuptools \
-		cython3 \
 		libblas3 \
 		libblas-dev  \
-		openssh-client && \
+		openssh-client \
+		python3.8-dev \
+		python3.8-venv && \
+	apt-get clean && \
 	# clean up
 	rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
-RUN	${PIP} install --upgrade pip && \
+RUN python3.8 -m venv /venv
+ENV PATH=/venv/bin:$PATH
+
+RUN ${PIP} install --upgrade numpy wheel setuptools pip cython && \
 	# install chainer and cupy
 	${PIP} install --no-cache-dir \
 		cupy-cuda101==${CHAINER_VERSION} \
